@@ -87,16 +87,16 @@ public class Server{
     public static void main(String[] args) {
 
         try {
-            Server server = new Server();
-            System.out.println("Aguardando conexao... ");
-            server.criarServerSocket(5555);//criacao do server socket na porta passada
+            while (true){
+                Server server = new Server();
+                System.out.println("Aguardando conexao... ");
+                server.criarServerSocket(5555);//criacao do server socket na porta passada
 
-            Socket socket = server.esperaConexao();//vai parar até que inicie a conexao
-            System.out.println("Cliente Conectado.");
-            server.trataConexao(socket);
-            System.out.println("Cliente Finalizado. ");
-             
-
+                Socket socket = server.esperaConexao();//vai parar até que inicie a conexao
+                System.out.println("Cliente Conectado.");
+                server.trataConexao(socket);
+                System.out.println("Cliente Finalizado. ");
+            }
         } catch (IOException e) {
             //tratar execao
             System.out.println("Entrou na excessoa dentro do main do server");
