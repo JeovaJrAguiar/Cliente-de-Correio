@@ -64,17 +64,19 @@ public class Server{
                 Cliente --> HELLO
                 Server <-- HELLO WORLD
             */
+            System.out.println("Tratando...");
             String msg = input.readUTF();
             System.out.println("Mensagem Recebida...");
             output.writeUTF("HELLO WORLD");
-
-            
+            output.flush();
             
             // Fechar streams de entrada e de saída.
             input.close();
             output.close();
         } catch (IOException e) {
             //tratar exececao
+            System.out.println("Problema no tratamento da conexao com o cliente: " + socket.getInetAddress());
+            System.out.println("Erro: " + e.getMessage());
         } finally {
             // Final de tratamento do protocolo
             // Fechar socket de comunicação entre servidor/cliente.
@@ -97,6 +99,7 @@ public class Server{
 
         } catch (IOException e) {
             //tratar execao
+            System.out.println("Entrou na excessoa dentro do main do server");
         }
         
     }
