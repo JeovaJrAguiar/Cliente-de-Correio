@@ -6,8 +6,6 @@ import java.lang.System.Logger;
 import java.net.Socket;
 import java.util.logging.Level;
 
-import server.Mensagem;
-
 public class Client{
     public static void main(String[] args) {
         try {
@@ -43,8 +41,9 @@ public class Client{
             m = (Mensagem) input.readObject();
             System.out.println("Resposta: " + m);
 
-            if(m.getStatus() == Status.OK){
-
+            if(m.getStatus() == Status.OK)
+            {
+                String reposta = (String) m.getParam("mensagem");
             }
 
             input.close();

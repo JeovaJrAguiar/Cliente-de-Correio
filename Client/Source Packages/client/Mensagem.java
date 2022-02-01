@@ -2,6 +2,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import server.Status;
+
 public class Mensagem implements Serializable{
     
     private String operacao;
