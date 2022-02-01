@@ -6,6 +6,8 @@ import java.lang.System.Logger;
 import java.net.Socket;
 import java.util.logging.Level;
 
+import server.Mensagem;
+
 public class Client{
     public static void main(String[] args) {
         try {
@@ -18,14 +20,32 @@ public class Client{
             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-            System.out.println("Enviando mensagem...");
-            String msg = "HELLO";
-            output.writeUTF(msg);
-            output.flush(); //libera buffer para envio
-            System.out.println("Mensagem " + msg + " enviada.");
+                /* Tratar a conversação entre cliente e servidor (tratar protocolo).
+                    HELLO
+                    nome: string
+                    sobrenome : String
 
-            msg = input.readUTF();
-            System.out.println("Resposta: " + msg);
+                    HELLOREPLY
+                    OK, ERRO, PARAMERROR
+                    mensagem: String
+                */
+
+            Mensagem m = new Mensagem("HELLO");
+            //m.setStatus(Status.SOLICITACAO);
+            m.setParam("nome", "Eduardo");
+            m.setParam("sobrenome", "Dipp");
+
+            output.writeObject(m);
+            output.flush(); //libera buffer para envio
+
+            System.out.println("Mensagem " + m + " enviada");
+
+            m = (Mensagem) input.readObject();
+            System.out.println("Resposta: " + m);
+
+            if(m.getStatus() == Status.OK){
+
+            }
 
             input.close();
             output.close();
@@ -33,6 +53,9 @@ public class Client{
         } catch (IOException ex) {
             System.out.println("Erro no cliente: " + ex);
             //Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex){
+            System.out.println("Erro no cliente: " + ex.getMessage());
             //Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

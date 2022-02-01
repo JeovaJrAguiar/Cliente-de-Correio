@@ -3,7 +3,6 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.runtime.ObjectMethods;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -61,13 +60,35 @@ public class Server{
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
             /* Tratar a conversação entre cliente e servidor (tratar protocolo).
-                Cliente --> HELLO
-                Server <-- HELLO WORLD
+                HELLO
+                nome: string
+                sobrenome : String
+
+                HELLOREPLY
+                OK, ERRO, PARAMERROR
+                mensagem: String
             */
+            
             System.out.println("Tratando...");
-            String msg = input.readUTF();
-            System.out.println("Mensagem Recebida...");
-            output.writeUTF("HELLO WORLD");
+            Mensagem m = (Mensagem)input.readObject();
+            String operacao = m.getOperacao();
+            Mensagem reply = null;
+            if(operacao == "HELLO")
+            {
+                String nome = (String) m.getParam("nome");
+                String sobrenome= (String) m.getParam("sobrenome");
+                reply = new Mensagem("HELLOREPLY");
+
+                if(nome == null || sobrenome == null)
+                    reply.setStatus(Status.PARAMERROR);
+                else
+                {
+                    reply.setStatus( Status.OK);
+                    reply.setParam("mensagem", "Hello World" + nome + " " + sobrenome);
+                }
+            }
+
+            output.writeObject(reply);
             output.flush();
             
             // Fechar streams de entrada e de saída.
@@ -87,20 +108,19 @@ public class Server{
     public static void main(String[] args) {
 
         try {
-            while (true){
                 Server server = new Server();
                 System.out.println("Aguardando conexao... ");
                 server.criarServerSocket(5555);//criacao do server socket na porta passada
 
-                Socket socket = server.esperaConexao();//vai parar até que inicie a conexao
-                System.out.println("Cliente Conectado.");
-                server.trataConexao(socket);
-                System.out.println("Cliente Finalizado. ");
-            }
+                while (true){
+                    Socket socket = server.esperaConexao();//vai parar até que inicie a conexao
+                    System.out.println("Cliente Conectado.");
+                    server.trataConexao(socket);
+                    System.out.println("Cliente Finalizado. ");
+                }
         } catch (IOException e) {
             //tratar execao
             System.out.println("Entrou na excessoa dentro do main do server");
-        }
-        
+        }   
     }
 }
