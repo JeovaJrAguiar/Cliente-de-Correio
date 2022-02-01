@@ -29,7 +29,7 @@ public class Client{
                 */
 
             Mensagem m = new Mensagem("HELLO");
-            //m.setStatus(Status.SOLICITACAO);
+            m.setStatus(Status.SOLICITACAO);
             m.setParam("nome", "Eduardo");
             m.setParam("sobrenome", "Dipp");
 

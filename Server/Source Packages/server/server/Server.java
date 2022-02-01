@@ -70,7 +70,7 @@ public class Server{
             */
             
             System.out.println("Tratando...");
-            Mensagem m = (Mensagem)input.readObject();
+            Mensagem m = (Mensagem) input.readObject();
             String operacao = m.getOperacao();
             Mensagem reply = null;
             if(operacao == "HELLO")
@@ -98,7 +98,9 @@ public class Server{
             //tratar exececao
             System.out.println("Problema no tratamento da conexao com o cliente: " + socket.getInetAddress());
             System.out.println("Erro: " + e.getMessage());
-        } finally {
+        } catch(ClassNotFoundException e){
+            System.out.println("Probelma na leitura do objeto.");
+        }finally {
             // Final de tratamento do protocolo
             // Fechar socket de comunicação entre servidor/cliente.
             fechaSocket(socket);
@@ -109,10 +111,12 @@ public class Server{
 
         try {
                 Server server = new Server();
-                System.out.println("Aguardando conexao... ");
+                System.out.println("Criando server... ");
                 server.criarServerSocket(5555);//criacao do server socket na porta passada
 
                 while (true){
+                    System.out.println("-- ");
+                    System.out.println("Aguardando conexao... ");
                     Socket socket = server.esperaConexao();//vai parar até que inicie a conexao
                     System.out.println("Cliente Conectado.");
                     server.trataConexao(socket);
