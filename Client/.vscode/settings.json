@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "Source Packages/client/client"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
+}
